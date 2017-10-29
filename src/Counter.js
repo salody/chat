@@ -28,9 +28,13 @@ const add = () => ({
   type: 'ADD'
 })
 
+const sub = () => ({
+  type: 'SUB'
+})
+
 @connect(
   state => ({ count: state.count}),
-  {add}
+  {add, sub}
 )
 class Counter extends Component {
   /* add = () => {
@@ -41,7 +45,7 @@ class Counter extends Component {
     return (
       <div>
         <div onClick={this.props.add}>+</div>
-        <div>-</div>
+        <div onClick={this.props.sub}>-</div>
         <p>{this.props.count}</p>
       </div>
     );
