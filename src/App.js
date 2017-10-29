@@ -1,24 +1,26 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
-import { Button } from 'antd-mobile';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import {applyMiddleware, createStore, compose} from 'redux';
+import {Provider} from 'react-redux';
+import {reducer} from './Counter';
+import Counter from './Counter'
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-        <Button type='primary'>Hello Antd</Button>
-        <Button type='primary'>Hello Antd</Button>
-      </div>
-    );
-  }
-}
+// use Redux DevTools
+/*eslint-disable */
+const composeSetup = process.env.NODE_ENV !== 'production' && typeof window === 'object' &&
+window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
+  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : compose;
+/*eslint-enable */
+
+const store = createStore(
+  reducer,
+  composeSetup(applyMiddleware()), // allows redux devtools to watch sagas
+);
+
+const App = () => (
+  <Provider store={store}>
+    <Counter />
+  </Provider>
+)
 
 export default App;
