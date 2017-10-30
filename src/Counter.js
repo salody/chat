@@ -52,8 +52,4 @@ class Counter extends Component {
   }
 }
 
-const stateToProps = (state) => ({
-  count: state.count
-})
-
 export default Counter;

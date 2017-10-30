@@ -1,26 +1,57 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import {applyMiddleware, createStore, compose} from 'redux';
-import {Provider} from 'react-redux';
-import {reducer} from './Counter';
-import Counter from './Counter'
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import Login from './domins/login'
 
-// use Redux DevTools
-/*eslint-disable */
-const composeSetup = process.env.NODE_ENV !== 'production' && typeof window === 'object' &&
-window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
-  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : compose;
-/*eslint-enable */
+const initialState = {
+  num: 0
+}
 
-const store = createStore(
-  reducer,
-  composeSetup(applyMiddleware()), // allows redux devtools to watch sagas
-);
+export const countReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case 'ADD':
+      return {
+        num: state.num + 1
+      }
+      break;
 
-const App = () => (
-  <Provider store={store}>
-    <Counter />
-  </Provider>
+    case 'SUB':
+      return {
+        num: state.num - 1
+      }
+      break;
+
+    default:
+      return state;
+  }
+}
+
+const add = () => ({
+  type: 'ADD'
+})
+
+const sub = () => ({
+  type: 'SUB'
+})
+
+@connect(
+  state => ({ count: state.count}),
+  {add, sub}
 )
+class Counter extends Component {
+  /* add = () => {
+    this.props.dispatch({type: 'ADD'})
+  } */
 
-export default App;
+  render() {
+    return (
+      <div>
+        <div onClick={this.props.add}>+</div>
+        <div onClick={this.props.sub}>-</div>
+        <p>{this.props.count.num}</p>
+        <Login />
+      </div>
+    );
+  }
+}
+
+export default Counter;
