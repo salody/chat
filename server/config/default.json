@@ -1,4 +1,9 @@
 {
   "port": 9080,
-  "db": "mongodb://127.0.0.1:27017/chat"
+  "db": "mongodb://127.0.0.1:27017/chat",
+  "session": {
+    "secret": "this is a chat you know",
+    "key": "chat",
+    "maxAge": 2592000000
+  }
 }

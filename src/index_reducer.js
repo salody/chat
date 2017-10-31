@@ -5,10 +5,11 @@
  */
 
 import { combineReducers } from 'redux';
-import { countReducer } from './App'
+import sessionReducer from './modules/auth/reducer';
+
 
 const IndexReducer = combineReducers({
-  count: countReducer
+  auth: sessionReducer
 });
 
 export default IndexReducer;

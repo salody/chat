@@ -2,9 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import registerServiceWorker from './registerServiceWorker';
 import { applyMiddleware, createStore, compose } from 'redux';
+import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
 
-import reducer from './index-reducer';
+import reducer from './index_reducer';
 import App from './App';
 
 // use Redux DevTools
@@ -16,7 +18,7 @@ const composeSetup = process.env.NODE_ENV !== 'production' && typeof window === 
 
 const store = createStore(
   reducer,
-  composeSetup(applyMiddleware()), // allows redux devtools to watch sagas
+  composeSetup(applyMiddleware(thunk)), // allows redux devtools to watch sagas
 );
 
 
@@ -25,7 +27,9 @@ const store = createStore(
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </Provider>
-, document.getElementById('root'));
+  , document.getElementById('root'));
 registerServiceWorker();

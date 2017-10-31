@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require('../models/User');
 
 router.post('/', function (req, res) {
+  console.log(req.session);
   User.create({
     name: req.body.name,
     email: req.body.email,

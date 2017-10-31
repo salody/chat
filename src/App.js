@@ -1,57 +1,20 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import Login from './domins/login'
+import { Switch, Route } from 'react-router-dom';
 
-const initialState = {
-  num: 0
-}
+import Login from './modules/login';
+import Signup from './modules/signup/index'
+import Home from './modules/home';
 
-export const countReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case 'ADD':
-      return {
-        num: state.num + 1
-      }
-      break;
-
-    case 'SUB':
-      return {
-        num: state.num - 1
-      }
-      break;
-
-    default:
-      return state;
-  }
-}
-
-const add = () => ({
-  type: 'ADD'
-})
-
-const sub = () => ({
-  type: 'SUB'
-})
-
-@connect(
-  state => ({ count: state.count}),
-  {add, sub}
-)
-class Counter extends Component {
-  /* add = () => {
-    this.props.dispatch({type: 'ADD'})
-  } */
-
+class App extends Component {
   render() {
     return (
-      <div>
-        <div onClick={this.props.add}>+</div>
-        <div onClick={this.props.sub}>-</div>
-        <p>{this.props.count.num}</p>
-        <Login />
-      </div>
+      <Switch>
+        <Route path="/login" component={Login} />
+        <Route path="/signup" component={Signup} />
+        <Route path="/" component={Home} />
+      </Switch>
     );
   }
 }
 
-export default Counter;
+export default App;
