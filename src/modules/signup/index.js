@@ -1,13 +1,20 @@
 import React, { Component } from 'react';
 import { List, InputItem, Radio } from 'antd-mobile';
-import axios from 'axios';
+import { connect } from 'react-redux';
+import signupRequest from './actions'
 
 const RadioItem = Radio.RadioItem;
 
+@connect(
+  state => ({
+    msg: state.signup.msg,
+    isAuthenticated: state.auth.isAuthenticated
+  }),
+  {signupRequest}
+)
 class Signup extends Component {
-  
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       name: '',
       email:'',
@@ -20,12 +27,10 @@ class Signup extends Component {
   handleClick = () => {
     let { name, email, password, type } = this.state;
     let user = {name, email, password, type};
-    axios.post('/api/signup', user)
-      .then(res => console.log(res))
+    this.props.signupRequest(user)
   };
 
   onChange = (item) => {
-    console.log(this.state);
     this.setState({
       value: item.value,
       type: item.label

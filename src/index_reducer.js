@@ -6,10 +6,12 @@
 
 import { combineReducers } from 'redux';
 import sessionReducer from './modules/auth/reducer';
+import signupReducer from './modules/signup/reducer';
 
 
 const IndexReducer = combineReducers({
-  auth: sessionReducer
+  auth: sessionReducer,
+  signup: signupReducer
 });
 
 export default IndexReducer;
