@@ -14,7 +14,7 @@ const signupReducer = (state = initialState, action) => {
     case SIGNUP_REQUEST:
       return {
         isFetching: true,
-        msg: '正在请求注册'
+        msg: '正在请求'
       };
 
     case SIGNUP_FAILURE:
@@ -27,7 +27,6 @@ const signupReducer = (state = initialState, action) => {
       return {
         isFetching: false,
         msg: '注册成功'
-
       };
 
     default:

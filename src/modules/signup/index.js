@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { List, InputItem, Radio } from 'antd-mobile';
+import { List, InputItem, Radio, Button, ActivityIndicator, Toast } from 'antd-mobile';
 import { connect } from 'react-redux';
 import signupRequest from './actions'
 
@@ -8,6 +8,7 @@ const RadioItem = Radio.RadioItem;
 @connect(
   state => ({
     msg: state.signup.msg,
+    isFetching: state.signup.isFetching,
     isAuthenticated: state.auth.isAuthenticated
   }),
   {signupRequest}
@@ -21,6 +22,12 @@ class Signup extends Component {
       password: '',
       type: '',
       value: ''
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.msg !== '' && nextProps.msg !== '正在请求') {
+      Toast.info(nextProps.msg, 2, null, false);
     }
   }
 
@@ -43,39 +50,43 @@ class Signup extends Component {
       { value: 1, label: 'student' },
     ];
     return (
-      <List renderHeader={() => '注册页'}>
-        <InputItem
-          clear
-          onChange={(v) => this.setState({name: v})}
-          placeholder="请输入您的姓名"
-        >姓名</InputItem>
-        <InputItem
-          clear
-          onChange={(v) => this.setState({email: v})}
-          placeholder="请输入您的邮件"
-        >邮件</InputItem>
-        <InputItem
-          clear
-          type='password'
-          onChange={(v) => this.setState({password: v})}
-          placeholder="请输入您的密码"
-        >密码</InputItem>
-        <List>
-          {data.map(i => (
-            <RadioItem key={i.value} checked={this.state.value === i.value} onChange={() => this.onChange(i)}>
-              {i.label}
-            </RadioItem>
-          ))}
+      <div>
+        <List renderHeader={() => '注册页'}>
+          <InputItem
+            clear
+            onChange={(v) => this.setState({name: v})}
+            placeholder="请输入您的姓名"
+          >姓名</InputItem>
+          <InputItem
+            clear
+            onChange={(v) => this.setState({email: v})}
+            placeholder="请输入您的邮件"
+          >邮件</InputItem>
+          <InputItem
+            clear
+            type='password'
+            onChange={(v) => this.setState({password: v})}
+            placeholder="请输入您的密码"
+          >密码</InputItem>
+          <List>
+            {data.map(i => (
+              <RadioItem key={i.value} checked={this.state.value === i.value} onChange={() => this.onChange(i)}>
+                {i.label}
+              </RadioItem>
+            ))}
+          </List>
         </List>
-        <List.Item>
-          <div
-            style={{ width: '100%', color: '#108ee9', textAlign: 'center' }}
-            onClick={this.handleClick}
-          >
-            注册
-          </div>
-        </List.Item>
-      </List>
+        <Button
+          type={'primary'}
+          style={{marginTop: 200}}
+          disabled={this.props.isFetching}
+          onClick={this.handleClick}
+        >注册</Button>
+        <ActivityIndicator
+          toast={true}
+          text={'Loading'}
+          animating={this.props.isFetching} />
+      </div>
     );
   }
 }
