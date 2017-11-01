@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { List, InputItem, Radio, Button, ActivityIndicator, Toast } from 'antd-mobile';
 import { connect } from 'react-redux';
-import signupRequest from './actions'
+import { Redirect } from 'react-router-dom';
+import signupRequest from './actions';
+import axios from 'axios';
 
 const RadioItem = Radio.RadioItem;
 
@@ -11,18 +13,24 @@ const RadioItem = Radio.RadioItem;
     isFetching: state.signup.isFetching,
     isAuthenticated: state.auth.isAuthenticated
   }),
-  {signupRequest}
+  { signupRequest }
 )
 class Signup extends Component {
   constructor(props) {
     super(props);
     this.state = {
       name: '',
-      email:'',
+      email: '',
       password: '',
       type: '',
       value: ''
     }
+  }
+
+  componentDidMount() {
+    console.log('====================================');
+    console.log('signup mount');
+    console.log('====================================');
   }
 
   componentWillReceiveProps(nextProps) {
@@ -33,7 +41,7 @@ class Signup extends Component {
 
   handleClick = () => {
     let { name, email, password, type } = this.state;
-    let user = {name, email, password, type};
+    let user = { name, email, password, type };
     this.props.signupRequest(user)
   };
 
@@ -46,47 +54,57 @@ class Signup extends Component {
 
   render() {
     const data = [
-      { value: 0, label: 'teacher' },
-      { value: 1, label: 'student' },
+      { value: 0, type: 'teacher', label: '老师' },
+      { value: 1, type: 'student', label: '学生' },
     ];
     return (
-      <div>
-        <List renderHeader={() => '注册页'}>
-          <InputItem
-            clear
-            onChange={(v) => this.setState({name: v})}
-            placeholder="请输入您的姓名"
-          >姓名</InputItem>
-          <InputItem
-            clear
-            onChange={(v) => this.setState({email: v})}
-            placeholder="请输入您的邮件"
-          >邮件</InputItem>
-          <InputItem
-            clear
-            type='password'
-            onChange={(v) => this.setState({password: v})}
-            placeholder="请输入您的密码"
-          >密码</InputItem>
-          <List>
-            {data.map(i => (
-              <RadioItem key={i.value} checked={this.state.value === i.value} onChange={() => this.onChange(i)}>
-                {i.label}
-              </RadioItem>
-            ))}
-          </List>
-        </List>
-        <Button
-          type={'primary'}
-          style={{marginTop: 200}}
-          disabled={this.props.isFetching}
-          onClick={this.handleClick}
-        >注册</Button>
-        <ActivityIndicator
-          toast={true}
-          text={'Loading'}
-          animating={this.props.isFetching} />
-      </div>
+      this.props.isAuthenticated ? (
+        <Redirect to='/home'/>
+      ) : (
+          <div>
+            <List renderHeader={() => '注册页'}>
+              <InputItem
+                clear
+                onChange={(v) => this.setState({ name: v })}
+                placeholder="请输入您的姓名"
+              >姓名</InputItem>
+              <InputItem
+                clear
+                onChange={(v) => this.setState({ email: v })}
+                placeholder="请输入您的邮件"
+              >邮件</InputItem>
+              <InputItem
+                clear
+                type='password'
+                onChange={(v) => this.setState({ password: v })}
+                placeholder="请输入您的密码"
+              >密码</InputItem>
+            </List>
+            <List renderHeader={() => '选择您的角色'}>
+              {data.map(i => (
+                <RadioItem key={i.value} checked={this.state.value === i.value} onChange={() => this.onChange(i)}>
+                  {i.label}
+                </RadioItem>
+              ))}
+            </List>
+            <Button
+              type={'primary'}
+              disabled={this.props.isFetching}
+              onClick={this.handleClick}
+            >注册</Button>
+            <Button
+              type={'primary'}
+              disabled={this.props.isFetching}
+              onClick={() => {
+                axios.get('/api/checkAuth')
+                  .then(res => console.log(res))
+              }}
+            >测试</Button>
+            <ActivityIndicator
+              toast={true}
+              text={'Loading'}
+              animating={this.props.isFetching} />
+          </div>)
     );
   }
 }

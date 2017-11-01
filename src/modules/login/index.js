@@ -12,6 +12,12 @@ class Login extends Component {
     }
   }
 
+  componentDidMount() {
+    console.log('====================================');
+    console.log('login mount');
+    console.log('====================================');
+  }
+
   handleClick = () => {
     let { email, password } = this.state;
     let user = { email, password };

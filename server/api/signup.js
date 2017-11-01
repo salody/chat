@@ -11,6 +11,7 @@ const User = require('../models/User');
 
 // POST /signup 用户注册
 router.post('/', function (req, res) {
+  console.log(req.session);
   let name = req.fields.name;
   let email = req.fields.email;
   let password = req.fields.password;

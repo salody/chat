@@ -9,6 +9,8 @@ import { BrowserRouter } from 'react-router-dom';
 import reducer from './index_reducer';
 import App from './App';
 
+
+
 // use Redux DevTools
 /*eslint-disable */
 const composeSetup = process.env.NODE_ENV !== 'production' && typeof window === 'object' &&
@@ -20,8 +22,6 @@ const store = createStore(
   reducer,
   composeSetup(applyMiddleware(thunk)), // allows redux devtools to watch sagas
 );
-
-
 
 
 
